@@ -1,4 +1,9 @@
 -- General config
+
+-- Disable netrw at start since we're using nvim-tree for this same functionality
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
@@ -48,7 +53,7 @@ vim.opt.confirm = true
 vim.keymap.set('n', '<leader>w', '<cmd>write<cr>', {desc = 'Save'})
 
 -- Bind File Explorer
-vim.keymap.set('n', '<space>f', '<cmd>Lexplore<cr>')
+vim.keymap.set('n', '<leader>f', '<cmd>NvimTreeToggle<cr>')
 
 ---- Bind global copy and paste
 vim.keymap.set({'n', 'x'}, 'gy', '"+y')
@@ -162,9 +167,9 @@ end
 lazy.path = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 lazy.opts = {}
 
+
 lazy.setup({
-	{'folke/tokyonight.nvim'},
-	{'nvim-lualine/lualine.nvim'},
+	{ import = 'plugins' },
 	{'lewis6991/gitsigns.nvim'},
 	{'folke/which-key.nvim'},
 	{
@@ -180,7 +185,7 @@ lazy.setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       -- Two important keymaps to use while in Telescope are:
@@ -247,14 +252,20 @@ require('lualine').setup({
 })
 
 require('gitsigns').setup({
-	opts = {
-		signs = {
-			add = { text = '+' },
-			change = { text = '~' },
-			delete = { text = '_' },
-			topdelete = { text = '‾' },
-			changedelete = { text = '~' },
-		},
+	signs = {
+		add = { text = '+' },
+		change = { text = '~' },
+		delete = { text = '_' },
+		topdelete = { text = '‾' },
+		changedelete = { text = '~' },
+	},
+})
+
+require('nvim-web-devicons').setup({})
+
+require('nvim-tree').setup({
+	view = {
+		width = 30,
 	},
 })
 
@@ -304,6 +315,20 @@ require('which-key').setup({
 		},
 	},
 })
+
+require('mason').setup()
+require('mason-lspconfig').setup()
+
+require('mason-lspconfig').setup_handlers {
+	function (server_name)
+		require('lspconfig')[server_name].setup({})
+	end,
+	-- Can override handlers here, use :h mason-lspconfig-automatic-server-setup
+	['noop'] = function()
+		return
+	end,
+}
+
 -- User Commands
 vim.api.nvim_create_user_command('ReloadConfig', 'source $MYVIMRC', {})
 
