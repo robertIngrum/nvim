@@ -172,6 +172,7 @@ lazy.setup({
 	{ import = 'plugins' },
 	{'lewis6991/gitsigns.nvim'},
 	{'folke/which-key.nvim'},
+	{'nvim-treesitter/nvim-treesitter'},
 	{
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
