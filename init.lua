@@ -53,7 +53,7 @@ vim.opt.confirm = true
 vim.keymap.set('n', '<leader>w', '<cmd>write<cr>', {desc = 'Save'})
 
 -- Bind File Explorer
-vim.keymap.set('n', '<leader>f', '<cmd>NvimTreeToggle<cr>')
+vim.keymap.set('n', '<leader>f', '<cmd>NvimTreeFocus<cr>')
 
 ---- Bind global copy and paste
 vim.keymap.set({'n', 'x'}, 'gy', '"+y')
@@ -245,6 +245,8 @@ lazy.setup({
 
 vim.opt.termguicolors = true
 vim.cmd.colorscheme('tokyonight')
+-- vim.cmd.colorscheme('rose-pine')
+-- vim.cmd.colorscheme('dayfox')
 
 require('lualine').setup({
 	options = {
@@ -263,12 +265,6 @@ require('gitsigns').setup({
 })
 
 require('nvim-web-devicons').setup({})
-
-require('nvim-tree').setup({
-	view = {
-		width = 30,
-	},
-})
 
 require('which-key').setup({
 	event = 'VimEnter',
@@ -323,13 +319,20 @@ require('mason-lspconfig').setup()
 require('mason-lspconfig').setup_handlers {
 	function (server_name)
 		require('lspconfig')[server_name].setup({})
-	end,
-	-- Can override handlers here, use :h mason-lspconfig-automatic-server-setup
-	['noop'] = function()
-		return
-	end,
+	end
 }
+
+require('nvim-treesitter.configs').setup({
+	ensure_installed = { "lua", "vim", "vimdoc", "query", "javascript", "typescript", "markdown", "markdown_inline", "html", "css" },
+	sync_installed = false,
+	auto_install = true,
+	highlight = {
+		enable = true,
+	},
+});
 
 -- User Commands
 vim.api.nvim_create_user_command('ReloadConfig', 'source $MYVIMRC', {})
+vim.api.nvim_create_user_command('Dark', 'colorscheme tokyonight-night', {})
+vim.api.nvim_create_user_command('Light', 'colorscheme dayfox', {})
 
