@@ -1,5 +1,7 @@
 # Neovim Config
 
+__THIS REPO IS NOW ARCHIVED, REFER TO ROBERTINGRUM/DOT-CONFIG/COMPONENTS/NVIM INSTEAD__
+
 ```
 git clone https://github.com/robertIngrum/neovim-config
 
